@@ -6,6 +6,44 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 import 'package:emergencies/constants.dart';
 import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
+
+
+var cl ; 
+
+  Future getPosition( ) async {
+    bool service ; 
+    
+    service = await Geolocator.isLocationServiceEnabled(); 
+    print (service ); 
+    LocationPermission per = LocationPermission.denied ; 
+    if (service == true ){
+      per = await Geolocator.checkPermission(); 
+      print (per);
+
+    }
+    
+    if ( per == LocationPermission.denied){
+        per = await Geolocator.requestPermission();
+      }
+
+    if (per == LocationPermission.always){
+      getLatAndLong();
+    }
+  }
+
+  Future<Position> getLatAndLong() async{
+    
+     cl =  await Geolocator.getCurrentPosition().then((value) => value );
+     print(cl.latitude);
+    print(cl.longitude);
+
+    return cl ; 
+
+    
+    
+  
+  }
 
 class OrderTrackingPage extends StatefulWidget {
   const OrderTrackingPage({Key? key}) : super(key: key);
@@ -17,9 +55,9 @@ class OrderTrackingPage extends StatefulWidget {
 class OrderTrackingPageState extends State<OrderTrackingPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
-    static const LatLng sourcelocation  = LatLng( 29.9595, 31.2540);
+    static  LatLng sourcelocation  = LatLng( cl.latitude , cl.longitude);
     static const  LatLng destlocation = LatLng( 30.0444, 31.2357);
-    static const LatLng currentLocation = LatLng( 29.9595, 31.2540);
+    static  LatLng currentLocation = LatLng( cl.latitude , cl.longitude);
    List<LatLng> polylineCoordinates = [];
    
    // getting our own location 
@@ -122,7 +160,7 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
               
                ),
 
-            const Marker(
+             Marker(
               markerId:MarkerId("source"),
               position: sourcelocation,
                ),
@@ -138,6 +176,8 @@ class OrderTrackingPageState extends State<OrderTrackingPage> {
             _controller.complete(mapController);
           },
           ),
+
+          
       );
     
         

@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:emergencies/order_traking_page.dart';
+import 'package:emergencies/current_location.dart';
 
 void main() {
   runApp(const MyApp());
 }
+ 
+int _currentIndex = 0 ; 
+late PageController _pageController ; 
+
+@override
+void initState(){
+  initState();
+  _pageController = PageController(); 
+}
+
+void dispose(){
+  _pageController.dispose();
+   dispose(); 
+
+}
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -21,7 +41,14 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      home: const OrderTrackingPage(),
-    );
+      //home: const OrderTrackingPage(),
+      // home: const Location(),
+      // navigatorKey: navigatorKey,
+
+      //home: Scaffold( ),
+      
+
+);
+    
   }
 }
