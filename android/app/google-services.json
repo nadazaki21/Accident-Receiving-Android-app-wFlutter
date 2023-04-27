@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1089272288201",
+    "project_id": "ambandriodapp",
+    "storage_bucket": "ambandriodapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089272288201:android:96d286d855e277cdd98e18",
+        "android_client_info": {
+          "package_name": "com.gp.ambulance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089272288201-3suenoqkf6r0jphf4l6jag8dbn29eji1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAly9QwWGXoo8geA16bo3c6krpThcEhTT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089272288201-3suenoqkf6r0jphf4l6jag8dbn29eji1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
