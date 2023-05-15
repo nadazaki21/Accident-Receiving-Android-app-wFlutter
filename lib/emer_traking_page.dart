@@ -1,240 +1,18 @@
-// import 'dart:async';
-// //import 'dart:html';
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-// //import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:emergencies/constants.dart';
-// //import 'package:location/location.dart';
-// import 'package:geolocator/geolocator.dart';
-
-
-
-//  var cl ; 
-
-//  LatLng sourcelocation  = LatLng( 0 , 0) ;
-//      const  LatLng destlocation = LatLng( 30.0444, 31.2357);
-//      LatLng currentLocation = LatLng( 0,0 );
-
-  
-//   Future getPosition( ) async {
-//     print ("excuting getPoition");
-//     bool service ; 
-    
-//     service = await Geolocator.isLocationServiceEnabled(); 
-//     print (service ); 
-    
-   
-
-//     LocationPermission per = LocationPermission.denied ; 
-//     if ( per == LocationPermission.denied){
-//         per = await Geolocator.requestPermission();
-       
-
-//      if (service == true ){
-//       per = await Geolocator.checkPermission(); 
-//        print ( " permission is ");
-//         print (per);
-
-//     }
-
-//       if (per == LocationPermission.always){ // not .always 
-//       await getLatAndLong();
-      
-//     }
-//       }
-
-   
-//   }
-
-//   Future<Position> getLatAndLong() async{
-
-//     print ("excuting LatandLng");
-    
-//      cl =  await Geolocator.getCurrentPosition().then((value) => value );
-
-//      print(cl.latitude);
-//      print(cl.longitude);
-
-//       sourcelocation  = LatLng( cl.latitude , cl.longitude);
-     
-//      currentLocation = LatLng( cl.latitude , cl.longitude);
-
-     
-
-//     return cl ; 
-
-    
-    
-  
-//   }
-  
-   
-
-//   //  @override
-//   // void initState()
-//   // {
-//   //   getPosition();
-//   //   initState(); 
-//   // }
-
-// class EmergencyTrackingPage extends StatefulWidget {
-//   const EmergencyTrackingPage({Key? key}) : super(key: key);
-
-//   @override
-//   State<EmergencyTrackingPage> createState() => EmergencyTrackingPageState();
-// }
-
-// class EmergencyTrackingPageState extends State<EmergencyTrackingPage> {
-//   final Completer<GoogleMapController> _controller = Completer();
-
- 
-
-   
-//    List<LatLng> polylineCoordinates = [];
-   
-//    // getting our own location 
-//   //  LocationData? currentLocation ; 
-
-//   //  void getCurrentLocation () async {
-//   //   Location location = Location ();
-//   //   location.getLocation().then((
-//   //     location)
-//   //     {
-//   //     currentLocation = location ; 
-//   //   },
-//   //   );
-
-//   //   GoogleMapController googleMapController = await _controller.future; 
-    
-//   //   //change the current location as the physicallocation changes 
-//   //   location.onLocationChanged.listen((newLoc) {
-//   //       currentLocation = newLoc ; 
-
-//   //       googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-//   //         CameraPosition(
-//   //         zoom: 13.5,
-//   //         target: LatLng(newLoc.latitude!,
-//   //         newLoc.longitude!,
-//   //        )
-//   //       )
-//   //       ),
-//   //       );
-
-//   //       setState(() {});
-//   //   },);
-//   //  } 
-
-
-//     //put polyline value in the array 
-//     void getPolyPoints() async{
-
-//       PolylinePoints polylinePoints = PolylinePoints();
-
-//       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(google_api_key,
-//        PointLatLng(sourcelocation.latitude, sourcelocation.longitude),
-//         PointLatLng(destlocation.latitude,destlocation.longitude),
-//         );
-
-//         if(result.points.isNotEmpty){
-//           print("polyline points exist ");
-//           result.points.forEach(
-//           (PointLatLng point) =>
-//                     polylineCoordinates.add (
-//                       LatLng(point.latitude, point.longitude)
-//                       ),
-//           );
-
-//           setState ((){});
-//         }
-//     }
-    
-//     @override
-//     void initState()  { 
-
-//       print ("excuting initState");
-      
-//       //getCurrentLocation();
-//       //getPolyPoints();
-//       super.initState();
-//       getPosition() ;
-      
-//     }
-//   @override
-//   Widget build(BuildContext context) {
-//     print ("excuting the build");
-//     setState ((){});
-    
-     
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text(
-//           "Emergency Location",
-//           style: TextStyle(color: Colors.black, fontSize: 16),
-//         ),
-//       ),
-//       body: //currentLocation == null 
-//       //? const Center (child: Text ("Loading"))
-//       /*:*/ GoogleMap(
-//           initialCameraPosition: CameraPosition(
-//           target: LatLng(currentLocation!.latitude! , currentLocation!.longitude!),
-//           zoom: 14.5
-//           ),
-//           polylines: {
-//             Polyline(
-//               polylineId: PolylineId("route"),
-//               points: polylineCoordinates,
-//               color: primaryColor,
-//               width: 6 
-//               ),
-
-//           },
-//           markers: {
-
-//             Marker(
-//               markerId:const MarkerId("currentLocation"),
-//               position: LatLng(
-//                 currentLocation!.latitude!, 
-//                 currentLocation!.longitude!) ,
-//               icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-
-              
-//                ),
-
-//              Marker(
-//               markerId:MarkerId("source"),
-//               position: sourcelocation,
-//                ),
-
-//             const Marker(
-//               markerId:MarkerId("dest"),
-//               position: destlocation,
-//                 ),
-//           },
-
-//           onMapCreated: (mapController)
-//           {
-//             _controller.complete(mapController);
-//           },
-//           ),
-
-          
-//       );
-    
-        
-//   }
-// }
-
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:emergencies/constants.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EmergencyTrackingPage extends StatefulWidget {
-  const EmergencyTrackingPage({Key? key}) : super(key: key);
+  final GeoPoint destLocation;
+  final String documentId;
+
+  const EmergencyTrackingPage(
+      {Key? key, required this.destLocation, required this.documentId})
+      : super(key: key);
 
   @override
   State<EmergencyTrackingPage> createState() => EmergencyTrackingPageState();
@@ -244,12 +22,12 @@ class EmergencyTrackingPageState extends State<EmergencyTrackingPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
   LatLng sourceLocation = const LatLng(0, 0);
-  final LatLng destLocation = const LatLng(30.0444, 31.2357);
   LatLng currentLocation = const LatLng(0, 0);
 
   List<LatLng> polylineCoordinates = [];
 
-  
+  bool isLoading = true;
+  bool positionObtained = false;
 
   Future<void> getPosition() async {
     print("Executing getPosition");
@@ -276,8 +54,19 @@ class EmergencyTrackingPageState extends State<EmergencyTrackingPage> {
         });
 
         getPolyPoints();
+        positionObtained = true;
+      } else {
+        positionObtained = false;
       }
+    } else {
+      positionObtained = false;
     }
+
+    setState(() {
+      isLoading = false;
+    });
+
+    print(currentLocation);
   }
 
   void getPolyPoints() async {
@@ -286,7 +75,7 @@ class EmergencyTrackingPageState extends State<EmergencyTrackingPage> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       google_api_key,
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-      PointLatLng(destLocation.latitude, destLocation.longitude),
+      PointLatLng(widget.destLocation.latitude, widget.destLocation.longitude),
     );
 
     if (result.points.isNotEmpty) {
@@ -301,62 +90,281 @@ class EmergencyTrackingPageState extends State<EmergencyTrackingPage> {
   @override
   void initState() {
     super.initState();
-    getPosition();
+
+    FirebaseFirestore.instance
+        .collection('emergency-calls')
+        .doc(widget.documentId)
+        .get()
+        .then((documentSnapshot) {
+      if (documentSnapshot.exists) {
+        GeoPoint location = documentSnapshot.get('location') ?? GeoPoint(0, 0);
+        setState(() {
+          sourceLocation = LatLng(location.latitude, location.longitude);
+        });
+      }
+    });
+
+    getPosition(); // Call getPosition() here
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Executing build");
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Emergency Location",
-          style: TextStyle(color: Colors.black, fontSize: 16),
-        ),
+        title: Text("Emergency Location"),
       ),
-      body: currentLocation.latitude == 0 && currentLocation.longitude == 0
-          ? const Center(child: CircularProgressIndicator())
-          : GoogleMap(
-              initialCameraPosition: CameraPosition(
-                target: currentLocation,
-                zoom: 14.5,
+      body: FutureBuilder(
+        future: Future.value(positionObtained), // use positionObtained here
+        builder: (context, snapshot) {
+          if (isLoading || !positionObtained) {
+            // check positionObtained here
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text("An error occurred"));
+          }
+
+          return GoogleMap(
+            initialCameraPosition: CameraPosition(
+              target: LatLng(
+                  widget.destLocation.latitude, widget.destLocation.longitude),
+              zoom: 14.5,
+            ),
+            polylines: {
+              Polyline(
+                polylineId: const PolylineId("route"),
+                points: polylineCoordinates,
+                color: primaryColor,
+                width: 6,
               ),
-              polylines: {
-                Polyline(
-                  polylineId: const PolylineId("route"),
-                  points: polylineCoordinates,
-                  color: primaryColor,
-                  width: 6,
-                ),
-              },
-              markers: {
-                // Marker(
-                //   markerId: const MarkerId("currentLocation"),
-                //   position: currentLocation,
-                //   icon: BitmapDescriptor.defaultMarkerWithHue(
-                //     BitmapDescriptor.hueBlue,
-                //   ),
-                // ),
-                Marker(
+            },
+            markers: {
+              Marker(
                 markerId: MarkerId("currentLocation"),
                 position: currentLocation,
-                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue),
+                infoWindow: InfoWindow(title: "Current Location"),
+                // Add a circle as a child of the marker
               ),
-
-                Marker(
-                  markerId: const MarkerId("source"),
-                  position: sourceLocation,
-                ),
-                Marker(
-                  markerId: const MarkerId("dest"),
-                  position: destLocation,
-                ),
-              },
-              onMapCreated: (mapController) {
-                _controller.complete(mapController);
-              },
-            ),
+              Marker(
+                markerId: MarkerId("dest"),
+                position: LatLng(widget.destLocation.latitude,
+                    widget.destLocation.longitude),
+              ),
+            },
+            onMapCreated: (mapController) {
+              _controller.complete(mapController);
+            },
+          );
+        },
+      ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+// trying to draw a polyline 
+
+// import 'dart:async';
+// import 'package:flutter/material.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+// import 'package:emergencies/constants.dart';
+// import 'package:emergencies/emergency-call.dart';
+// import 'package:emergencies/emer_traking_page.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+
+// class EmergencyTrackingPage extends StatefulWidget {
+//   final GeoPoint destLocation;
+//   final String documentId;
+
+//   const EmergencyTrackingPage(
+//       {Key? key, required this.destLocation, required this.documentId})
+//       : super(key: key);
+
+//   @override
+//   State<EmergencyTrackingPage> createState() => EmergencyTrackingPageState();
+// }
+
+// class EmergencyTrackingPageState extends State<EmergencyTrackingPage> {
+//   final Completer<GoogleMapController> _controller = Completer();
+
+//   LatLng sourceLocation = const LatLng(0, 0);
+//   LatLng currentLocation = const LatLng(0, 0);
+
+//   List<LatLng> polylineCoordinates = [];
+
+//   bool isLoading = true;
+//   bool positionObtained = false;
+
+//   Future<void> getPosition() async {
+//     print("Executing getPosition");
+//     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+//     print(serviceEnabled);
+
+//     LocationPermission permission = LocationPermission.denied;
+//     if (permission == LocationPermission.denied) {
+//       permission = await Geolocator.requestPermission();
+
+//       if (serviceEnabled == true) {
+//         permission = await Geolocator.checkPermission();
+//         print("Permission is $permission");
+//       }
+
+//       if (permission == LocationPermission.always) {
+//         final position = await Geolocator.getCurrentPosition();
+//         print(position.latitude);
+//         print(position.longitude);
+
+//         setState(() {
+//           currentLocation = LatLng(position.latitude, position.longitude);
+//           sourceLocation = currentLocation;
+//         });
+
+//         positionObtained = true;
+//       } else {
+//         positionObtained = false;
+//       }
+//     } else {
+//       positionObtained = false;
+//     }
+
+//     setState(() {
+//       isLoading = false;
+//     });
+
+//     print(currentLocation);
+//   }
+
+//   PolylinePoints _polylinePoints = PolylinePoints();
+
+//   Future<void> getPolyPoints() async {
+//     PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
+//       google_api_key,
+//       PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+//       PointLatLng(widget.destLocation.latitude, widget.destLocation.longitude),
+//     );
+
+//     if (result != null && result.points.isNotEmpty) {
+//       setState(() {
+//         polylineCoordinates = result.points
+//             .map((PointLatLng point) => LatLng(point.latitude, point.longitude))
+//             .toList();
+//       });
+//     }
+//   }
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     loadEmergencyData();
+//   }
+
+//   Future<void> loadEmergencyData() async {
+//     // Get the document snapshot
+//     final documentSnapshot = await FirebaseFirestore.instance
+//         .collection('emergency-calls')
+//         .doc(widget.documentId)
+//         .get();
+
+//     if (documentSnapshot.exists) {
+//       final location = documentSnapshot.get('location') ?? GeoPoint(0, 0);
+//       setState(() {
+//         sourceLocation = LatLng(location.latitude, location.longitude);
+//       });
+//     }
+
+//     // Get the current location
+//     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+//     if (serviceEnabled) {
+//       final permission = await Geolocator.checkPermission();
+//       if (permission == LocationPermission.always ||
+//           permission == LocationPermission.whileInUse) {
+//         final position = await Geolocator.getCurrentPosition();
+//         setState(() {
+//           currentLocation = LatLng(position.latitude, position.longitude);
+//           sourceLocation = currentLocation;
+//         });
+//         positionObtained = true;
+//       }
+//     }
+
+//     // Get the polyline points
+//     if (positionObtained) {
+//       final result = await _polylinePoints.getRouteBetweenCoordinates(
+//         google_api_key,
+//         PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+//         PointLatLng(
+//             widget.destLocation.latitude, widget.destLocation.longitude),
+//       );
+//       if (result != null && result.points.isNotEmpty) {
+//         setState(() {
+//           polylineCoordinates = result.points
+//               .map((point) => LatLng(point.latitude, point.longitude))
+//               .toList();
+//         });
+//       }
+//     }
+
+//     setState(() {
+//       isLoading = false;
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           title: Text("Emergency Location"),
+//         ),
+//         body: isLoading || !positionObtained
+//             ? Center(child: CircularProgressIndicator())
+//             : GoogleMap(
+//                 initialCameraPosition: CameraPosition(
+//                   target: currentLocation,
+//                   zoom: 14.5,
+//                 ),
+//                 polylines: {
+//                   if (polylineCoordinates.isNotEmpty &&
+//                       polylineCoordinates.length >= 2)
+//                     Polyline(
+//                       polylineId: PolylineId('route'),
+//                       points: polylineCoordinates,
+//                       color: Colors.red,
+//                       width: 5,
+//                     ),
+//                 },
+//                 markers: {
+//                   Marker(
+//                     markerId: MarkerId("currentLocation"),
+//                     position: currentLocation,
+//                     icon: BitmapDescriptor.defaultMarkerWithHue(
+//                         BitmapDescriptor.hueCyan),
+//                   ),
+//                   Marker(
+//                     markerId: MarkerId("source"),
+//                     position: sourceLocation,
+//                   ),
+//                   Marker(
+//                     markerId: MarkerId("dest"),
+//                     position: LatLng(widget.destLocation.latitude,
+//                         widget.destLocation.longitude),
+//                   ),
+//                 },
+//                 onMapCreated: (mapController) {
+//                   _controller.complete(mapController);
+//                 },
+//               ));
+//   }
+// }
