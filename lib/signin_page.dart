@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:emergencies/page.dart';
+import 'package:emergencies/draft.dart';
 import 'package:emergencies/list.dart';
+import 'package:provider/provider.dart';
+import 'package:emergencies/user_provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -18,11 +20,19 @@ class _SignInPageState extends State<SignInPage> {
   String? _email;
   String? _password;
 
+  // void onLoginSuccess(List<String> userIDs) {
+  //   final userProvider = Provider.of<UserProvider>(context, listen: false);
+  //   userProvider.setUsers(userIDs);
+
+  //   // start loop here
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign In'),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Padding(
@@ -73,7 +83,8 @@ class _SignInPageState extends State<SignInPage> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => EmergenciesList(),
+                            builder: (context) =>
+                                EmergenciesList(/*email: _email!*/),
                           ),
                         );
                       } on FirebaseAuthException catch (e) {

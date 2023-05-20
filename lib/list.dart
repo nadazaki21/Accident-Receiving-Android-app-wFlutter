@@ -6,9 +6,15 @@ import 'package:emergencies/location_details.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:emergencies/signin_page.dart';
 import 'package:geolocator/geolocator.dart';
-import 'dart:math' show cos, sqrt, asin, sin, pi, atan2;
+import 'dart:math' show cos, sqrt, sin, pi, atan2;
+import 'package:provider/provider.dart';
+import 'package:emergencies/user_provider.dart';
 
 class EmergenciesList extends StatefulWidget {
+  // final String email;
+
+  // const EmergenciesList({Key? key, required this.email}) : super(key: key);
+
   @override
   _EmergenciesListState createState() => _EmergenciesListState();
 }
@@ -20,8 +26,9 @@ class _EmergenciesListState extends State<EmergenciesList> {
       10.0; // the maximum distance in kilometers allowed between current location and emergency location
   Position? _currentPosition; // holds the current user location
 
-  Color _buttonColor =
-      Colors.green; //which indicates whether this ambulance car is bbusy or not
+  late String email;
+  // Color _buttonColor =
+  //     Colors.green; //which indicates whether this ambulance car is bbusy or not
 
   // method to get the current location
   Future<void> _getCurrentLocation() async {
@@ -85,29 +92,54 @@ class _EmergenciesListState extends State<EmergenciesList> {
     );
   }
 
-  void _onButtonPressed() {
-    setState(() {
-      _buttonColor = _buttonColor == Colors.red ? Colors.green : Colors.red;
-    });
+  // void _onButtonPressed() {
+  //   setState(() {
+  //     _buttonColor = _buttonColor == Colors.red ? Colors.green : Colors.red;
+  //   });
+  // }
+
+  // for getting the email of this user on this specific device
+  void getUserEmail() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        email = user.email!;
+      });
+    }
+  }
+
+  // ot get the current email that the pointer looping on all users is pointing to
+  void _fetchUserIDs() {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.fetchUserIDs();
   }
 
   @override
   void initState() {
     super.initState();
+
     _getCurrentLocation();
+    _fetchUserIDs();
+    getUserEmail();
   }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final currentUserId = userProvider.getCurrentUserID();
+
+    print("this is the current id that thepointer is poiting to ");
+    print(currentUserId);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          ElevatedButton(
-            onPressed: _onButtonPressed,
-            child: Text('Change state'),
-            style: ElevatedButton.styleFrom(primary: _buttonColor),
-          ),
+          // ElevatedButton(
+          //   onPressed: _onButtonPressed,
+          //   child: Text('Change state'),
+          //   style: ElevatedButton.styleFrom(primary: _buttonColor),
+          // ),
           IconButton(
             icon: Icon(Icons.calendar_today),
             onPressed: () async {
@@ -141,26 +173,63 @@ class _EmergenciesListState extends State<EmergenciesList> {
             case ConnectionState.waiting:
               return Center(child: CircularProgressIndicator());
             default:
-              if (snapshot.data == null) {
+              if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
                 return Text('No data found.');
               }
               List<ecall> _emergencies = snapshot.data!.docs
                   .map((doc) => ecall.fromJson(
                       doc.id, doc.data() as Map<String, dynamic>))
                   .toList();
+
+              if (_emergencies.isEmpty) {
+                return Text('No emergencies found.');
+              }
+
               return ListView.builder(
                 itemCount: _emergencies.length,
                 itemBuilder: (BuildContext context, int index) {
+                  if (index >= _emergencies.length || index > 0) {
+                    return SizedBox.shrink();
+                  }
+
                   double distance = _calculateDistance(
                     _currentPosition!.latitude,
                     _currentPosition!.longitude,
                     _emergencies[index].location.latitude,
                     _emergencies[index].location.longitude,
                   );
+                  String? viewedBy = _emergencies[index].viewedby;
+
                   if (distance > _distanceThreshold) {
-                    // Skip the item if the distance is greater than the threshold
                     return SizedBox.shrink();
                   }
+
+                  // null 1 and pointer 1 conditions
+
+                  if (viewedBy == 'null' && currentUserId == email) {
+                    _emergencies[index].viewedby = email;
+                    print(" the changed value of viewedby filed is :");
+                    print(_emergencies[index].viewedby);
+                    userProvider.moveToNextUser();
+                    // print(" the next user is ");
+                    // print(currentUserId);
+                  }
+                  //  null 1 and pointer 0 conditions
+                  if (viewedBy == 'null' && currentUserId != email) {
+                    return SizedBox.shrink();
+                  }
+
+                  // null 0  and pointer 0 conditions
+                  if (viewedBy != "null" && viewedBy != email) {
+                    // Skip the item if viewedBy is not null and not equal to email
+                    return SizedBox.shrink();
+                  }
+                  // } else {
+                  //   print(" no condition met ");
+                  // }
+
+                  // if null 0 and pointer 1 that's the normal conditions that we needn't specify and thing special for as teh list item will be displayed normaill
+
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(

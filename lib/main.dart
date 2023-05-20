@@ -3,11 +3,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:emergencies/home.dart';
+import 'package:emergencies/emergency-call.dart';
+import 'package:emergencies/user_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); //opens channel to native api to firebase
   await Firebase.initializeApp();
+  //listenToEmergencyCalls();
+  Provider.debugCheckInvalidValueType = null;
   runApp(const MyApp());
 }
 
@@ -19,8 +24,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Home(),
+    return Provider<UserProvider>(
+      create: (_) => UserProvider(), // Create an instance of UserProvider
+      child: MaterialApp(
+        title: 'My App',
+        home: Home(),
+      ),
+      // return MaterialApp(
+      //   home: Home(),
     );
   }
 }
