@@ -261,7 +261,15 @@ class _EmergenciesListState extends State<EmergenciesList> {
                           }
                         },
                       ),
-                      trailing: Text('${distance.toStringAsFixed(2)} km away'),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (_emergencies[index].viewedby ==
+                              "null") // Check isNew property
+                            Text('New', style: TextStyle(color: Colors.green)),
+                          Text('${distance.toStringAsFixed(2)} km away'),
+                        ],
+                      ),
                     ),
                   );
                 },
