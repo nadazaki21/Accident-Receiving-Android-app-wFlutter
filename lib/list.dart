@@ -23,7 +23,7 @@ class _EmergenciesListState extends State<EmergenciesList> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   DateTime selectedDate = DateTime.now();
   double _distanceThreshold =
-      10.0; // the maximum distance in kilometers allowed between current location and emergency location
+      100.0; // the maximum distance in kilometers allowed between current location and emergency location
   Position? _currentPosition; // holds the current user location
 
   late String email;
@@ -92,12 +92,6 @@ class _EmergenciesListState extends State<EmergenciesList> {
     );
   }
 
-  // void _onButtonPressed() {
-  //   setState(() {
-  //     _buttonColor = _buttonColor == Colors.red ? Colors.green : Colors.red;
-  //   });
-  // }
-
   // for getting the email of this user on this specific device
   void getUserEmail() {
     User? user = FirebaseAuth.instance.currentUser;
@@ -135,11 +129,6 @@ class _EmergenciesListState extends State<EmergenciesList> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          // ElevatedButton(
-          //   onPressed: _onButtonPressed,
-          //   child: Text('Change state'),
-          //   style: ElevatedButton.styleFrom(primary: _buttonColor),
-          // ),
           IconButton(
             icon: Icon(Icons.calendar_today),
             onPressed: () async {
@@ -188,10 +177,6 @@ class _EmergenciesListState extends State<EmergenciesList> {
               return ListView.builder(
                 itemCount: _emergencies.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (index >= _emergencies.length || index > 0) {
-                    return SizedBox.shrink();
-                  }
-
                   double distance = _calculateDistance(
                     _currentPosition!.latitude,
                     _currentPosition!.longitude,
@@ -201,32 +186,49 @@ class _EmergenciesListState extends State<EmergenciesList> {
                   String? viewedBy = _emergencies[index].viewedby;
 
                   if (distance > _distanceThreshold) {
+                    print("distance condition not satisfied ");
                     return SizedBox.shrink();
                   }
 
                   // null 1 and pointer 1 conditions
 
                   if (viewedBy == 'null' && currentUserId == email) {
+                    print("new emergency for current user ");
                     _emergencies[index].viewedby = email;
                     print(" the changed value of viewedby filed is :");
                     print(_emergencies[index].viewedby);
-                    userProvider.moveToNextUser();
-                    // print(" the next user is ");
-                    // print(currentUserId);
+                    // Update the viewedby field in Firestore
+                    _db
+                        .collection('emergency-calls')
+                        .doc(_emergencies[index].id)
+                        .update({'viewedby': email});
+                    final currentUserId = userProvider.moveToNextUser();
+
+                    print("now current user is : ");
+                    print(currentUserId);
                   }
                   //  null 1 and pointer 0 conditions
                   if (viewedBy == 'null' && currentUserId != email) {
+                    print("new emerency  not for this user  ");
+                    if (viewedBy == 'null') {
+                      print(" viewedby is null");
+                    }
+
+                    if (currentUserId != email) {
+                      print("current user is:");
+                      print(currentUserId);
+                      print("the loged with email is ");
+                      print(email);
+                    }
                     return SizedBox.shrink();
                   }
 
                   // null 0  and pointer 0 conditions
                   if (viewedBy != "null" && viewedBy != email) {
+                    print("old emerency not for this user  ");
                     // Skip the item if viewedBy is not null and not equal to email
                     return SizedBox.shrink();
                   }
-                  // } else {
-                  //   print(" no condition met ");
-                  // }
 
                   // if null 0 and pointer 1 that's the normal conditions that we needn't specify and thing special for as teh list item will be displayed normaill
 

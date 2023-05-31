@@ -17,7 +17,8 @@ class EmergencyLocationPageState extends State<EmergencyLocationPage> {
   late String _documentId;
   late GeoPoint _location;
   String? _address;
-  String? _title;
+  String? _phone;
+  String? _Name;
 
   @override
   void initState() {
@@ -32,7 +33,8 @@ class EmergencyLocationPageState extends State<EmergencyLocationPage> {
       if (documentSnapshot.exists) {
         setState(() {
           _location = documentSnapshot.get('location') ?? GeoPoint(0, 0);
-          _title = documentSnapshot.get('title') ?? 'Unknown';
+          _phone = documentSnapshot.get('phone') ?? 'Unknown';
+          _Name = documentSnapshot.get('Name') ?? 'Unknown';
         });
         _getAddressFromLocation();
       }
@@ -75,49 +77,64 @@ class EmergencyLocationPageState extends State<EmergencyLocationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      body: Stack(
-        children: [
-          Positioned(
-            top: MediaQuery.of(context).size.height / 4,
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 16.0),
-                  Text(
-                    _title ?? 'Loading..',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
-                      color: Colors.black,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/map3.jpeg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: MediaQuery.of(context).size.height / 4,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 8.0),
+                    Text(
+                      _address ?? 'Loading..',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    _address ?? 'Loading..',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.black,
+                    SizedBox(height: 16.0),
+                    Text(
+                      _phone ?? 'Loading..',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: _navigateToTrackingPage,
-                    child: Text('View Location On Map'),
-                  ),
-                  SizedBox(height: 16.0), // Add this line for spacing
-                  ElevatedButton(
-                    onPressed: _goBack, // Add this line for the back button
-                    child: Text('Back'),
-                  ),
-                ],
+                    Text(
+                      _Name ?? 'Loading..',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: _navigateToTrackingPage,
+                      child: Text('View Location On Map'),
+                    ),
+                    SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: _goBack,
+                      child: Text('Back'),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

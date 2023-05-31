@@ -38,9 +38,11 @@ class UserProvider with ChangeNotifier {
   //   return userIDs[pointer];
   // }
 
-  void moveToNextUser() {
+  String moveToNextUser() {
     pointer = (pointer + 1) % userIDs.length;
     notifyListeners();
+    print("This is from the moveToNextUser function, the current user is ");
     print(userIDs[pointer]);
+    return userIDs[pointer];
   }
 }
