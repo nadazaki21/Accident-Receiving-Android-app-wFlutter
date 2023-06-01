@@ -27,8 +27,8 @@ class _EmergenciesListState extends State<EmergenciesList> {
   Position? _currentPosition; // holds the current user location
 
   late String email;
-  // Color _buttonColor =
-  //     Colors.green; //which indicates whether this ambulance car is bbusy or not
+
+  List<String> newEmergencies = [];
 
   // method to get the current location
   Future<void> _getCurrentLocation() async {
@@ -193,6 +193,7 @@ class _EmergenciesListState extends State<EmergenciesList> {
                   // null 1 and pointer 1 conditions
 
                   if (viewedBy == 'null' && currentUserId == email) {
+                    //New = true;
                     print("new emergency for current user ");
                     _emergencies[index].viewedby = email;
                     print(" the changed value of viewedby filed is :");
@@ -202,11 +203,14 @@ class _EmergenciesListState extends State<EmergenciesList> {
                         .collection('emergency-calls')
                         .doc(_emergencies[index].id)
                         .update({'viewedby': email});
+
+                    newEmergencies.add(_emergencies[index].id);
                     final currentUserId = userProvider.moveToNextUser();
 
                     print("now current user is : ");
                     print(currentUserId);
                   }
+
                   //  null 1 and pointer 0 conditions
                   if (viewedBy == 'null' && currentUserId != email) {
                     print("new emerency  not for this user  ");
@@ -220,6 +224,7 @@ class _EmergenciesListState extends State<EmergenciesList> {
                       print("the loged with email is ");
                       print(email);
                     }
+
                     return SizedBox.shrink();
                   }
 
@@ -227,6 +232,7 @@ class _EmergenciesListState extends State<EmergenciesList> {
                   if (viewedBy != "null" && viewedBy != email) {
                     print("old emerency not for this user  ");
                     // Skip the item if viewedBy is not null and not equal to email
+
                     return SizedBox.shrink();
                   }
 
@@ -266,8 +272,8 @@ class _EmergenciesListState extends State<EmergenciesList> {
                       trailing: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (_emergencies[index].viewedby ==
-                              "null") // Check isNew property
+                          if (newEmergencies.contains(
+                              _emergencies[index].id)) // Check New property
                             Text('New', style: TextStyle(color: Colors.green)),
                           Text('${distance.toStringAsFixed(2)} km away'),
                         ],
